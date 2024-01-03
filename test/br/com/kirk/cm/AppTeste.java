@@ -1,4 +1,4 @@
-package br.com.kirk.cm.modelo;
+package br.com.kirk.cm;
 
 
 import static org.junit.jupiter.api.Assertions.*;
