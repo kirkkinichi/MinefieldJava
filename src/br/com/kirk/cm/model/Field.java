@@ -46,7 +46,7 @@ public class Field {
     }
 
     //Reinicia o Campo Minado
-    void restartField () {
+    void restart() {
 		marked = false;
 		mined = false;
 		open = false;
@@ -133,5 +133,19 @@ public class Field {
 		boolean protegido = mined && marked;
 		
 		return desvendado || protegido;		
+	}
+
+    public String toString() {
+		if(marked) {
+			return "x";
+		} else if (open && mined) {
+			return "*";
+		} else if (open && countNeighborsMine() > 0) {
+			return Long.toString(countNeighborsMine());
+		} else if (open) {
+			return " ";
+		} else {
+			return "?";
+		}
 	}
 }
