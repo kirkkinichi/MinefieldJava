@@ -88,5 +88,50 @@ public class Field {
 	boolean chekNeighboursSecurity () {
 		return neighbors.stream().noneMatch(v -> v.mined);
 	}	
+    
+	//Verifica se o campo está marcado
+	public boolean isMarked() {
+		return marked;
+	}
+	
+    //Mina um campo
+	void mine() {		
+		mined = true;		
+	}	
+	
+    //Retorna mina ativa
+	public boolean isMined() {
+		return mined;
+	}
+	
+    //Retorna campo revelado
+	public boolean isOpened() {
+		return open;
+	}
+	
+    //Retorna campo fechado
+	public boolean isClosed() {
+		return !isOpened();
+	}
 
+    //Getters e Setters    
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+    void setOpened(boolean open) {
+		this.open = open;
+	}
+	
+    //Retorna objetivo
+	boolean goalAchieved() {
+		boolean desvendado = !mined && open;
+		boolean protegido = mined && marked;
+		
+		return desvendado || protegido;		
+	}
 }
