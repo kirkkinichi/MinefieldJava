@@ -15,7 +15,7 @@ public class BoardView {
 	public BoardView(Board board) {
 		this.board = board;
 		
-		//runGame();
+		runGame();
 	}
 	
     //Executa o jogo
@@ -26,7 +26,7 @@ public class BoardView {
 			while(continuar) {
 				gameCycle();
 				
-				System.out.println("Outra partida? (s/n) ");
+				System.out.println("New match? (s/n) ");
 				String resposta = entrada.nextLine();
 				
 				if("n".equalsIgnoreCase(resposta)) { //ignora letra maiuscula / minuscula
@@ -36,7 +36,7 @@ public class BoardView {
 				}
 			}
 		} catch(SairException e) {
-			System.out.println("Tchauu!");
+			System.out.println("Bye!!");
 		} finally {
 			entrada.close();
 		}
