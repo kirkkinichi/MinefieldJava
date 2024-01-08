@@ -3,8 +3,6 @@ package br.com.kirk.cm.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.kirk.cm.exception.ExplosionException;
-
 public class Field {
     
     private boolean mined = false;
@@ -15,10 +13,21 @@ public class Field {
 	private final int column;
 	
 	private List<Field> neighbors = new ArrayList<>();
+	private List<FieldObserver> observers = new ArrayList<>();
 		
 	Field(int row, int column) {
 		this.row = row;
 		this.column = column;
+	}
+
+	//Registra Observador
+	public void registerObserver(FieldObserver observer){
+		observers.add(observer);
+	}
+
+	//Notificar que evento aconteceu
+	public void notifyObservers(FieldEvent event){
+		observers.stream().forEach(o -> o.eventOccurred(this, event));
 	}
 
     //Adiciona Vizinhos
@@ -56,6 +65,12 @@ public class Field {
     void changeMark() {
 		if(!open) {
 			marked = !marked;
+
+			if (marked) {
+				notifyObservers(FieldEvent.MARK);
+			} else {
+				notifyObservers(FieldEvent.MARKOFF);
+			}
 		}
 	}
 	
@@ -63,12 +78,14 @@ public class Field {
 	boolean openField() {
 		
 		if(!open && !marked) {
-			open = true;
 			
 			if(mined) {
-				throw new ExplosionException();
+				notifyObservers(FieldEvent.EXPLODE);
+				return true;
 			}
 			
+			setOpened(true);
+
 			if(chekNeighboursSecurity()) {
 				neighbors.forEach(v -> v.openField());
 			}
@@ -125,6 +142,10 @@ public class Field {
 
     void setOpened(boolean open) {
 		this.open = open;
+
+		if (open) {
+			notifyObservers(FieldEvent.OPEN);
+		}
 	}
 	
     //Retorna objetivo
@@ -133,19 +154,5 @@ public class Field {
 		boolean protegido = mined && marked;
 		
 		return desvendado || protegido;		
-	}
-
-    public String toString() {
-		if(marked) {
-			return "x";
-		} else if (open && mined) {
-			return "*";
-		} else if (open && countNeighborsMine() > 0) {
-			return Long.toString(countNeighborsMine());
-		} else if (open) {
-			return " ";
-		} else {
-			return "?";
-		}
-	}
+	}    
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import br.com.kirk.cm.exception.ExplosionException;
-
 public class Board {
 
     private int row;
@@ -28,7 +26,8 @@ public class Board {
 	public void openField(int row, int column) {
 		try {
 			fields.parallelStream().filter(c->c.getRow() == row && c.getColumn() == column).findFirst().ifPresent(c -> c.openField());;
-		} catch (ExplosionException e) {
+		} catch (Exception e) {
+			//FIXME Ajustar método abrir
 			fields.forEach(c -> c.setOpened(true));
 			throw e;
 		}		
@@ -78,31 +77,5 @@ public class Board {
 	public void restart( ) {
 		fields.stream().forEach(c -> c.restart());
 		sortMines();
-	}	
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();	
-		int i = 0;
-
-		sb.append("  ");
-		for (int c = 0; c < columns; c++) {
-			sb.append(" ");
-			sb.append(c);
-			sb.append(" ");
-		}		
-		sb.append("\n");
-				
-		for(int l = 0; l < row; l++) {
-			sb.append(l);
-			sb.append(" ");
-			for(int c = 0; c < columns; c++, i++) {
-				sb.append(" ");
-				sb.append(fields.get(i));
-				sb.append(" ");
-			}
-			sb.append("\n");
-		}
-		
-		return sb.toString();
-	}
+	}		
 }
