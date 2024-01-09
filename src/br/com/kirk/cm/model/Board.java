@@ -2,15 +2,17 @@ package br.com.kirk.cm.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class Board {
+public class Board implements FieldObserver{
 
     private int row;
 	private int columns;
 	private int mines;
 	
 	private final List<Field> fields = new ArrayList<>();
+	private final List<Consumer<Boolean>> observers = new ArrayList<>();
 
 	public Board(int row, int columns, int mines) {
 		this.row = row;
@@ -21,16 +23,24 @@ public class Board {
 		associateNeighbors();
 		sortMines();
 	}	
+
+	public void observerRegister(Consumer<Boolean> observer) {
+		observers.add(observer);
+	}
+
+	//Notificar que evento aconteceu
+	public void notifyObservers(boolean result){
+		observers.stream().forEach(o -> o.accept(result));
+	}
+
+	//Mostrar campos que possuem minas
+	private void showMines() {
+		fields.stream().filter(c -> c.isMined()).forEach(c -> c.setOpened(true));
+	}
 	
     //Abre o campo
-	public void openField(int row, int column) {
-		try {
-			fields.parallelStream().filter(c->c.getRow() == row && c.getColumn() == column).findFirst().ifPresent(c -> c.openField());;
-		} catch (Exception e) {
-			//FIXME Ajustar método abrir
-			fields.forEach(c -> c.setOpened(true));
-			throw e;
-		}		
+	public void openField(int row, int column) {		
+		fields.parallelStream().filter(c->c.getRow() == row && c.getColumn() == column).findFirst().ifPresent(c -> c.openField());
 	}
 	
     //Muda a marcação do campo
@@ -41,8 +51,10 @@ public class Board {
     //Gera as linhas e colunas do campo
 	private void generateFields () {
 		for(int l = 0; l < row; l++) {
-			for(int c = 0; c < columns; c++) {
-				fields.add(new Field(l,c));
+			for(int c = 0; c < columns; c++) {				
+				Field field = new Field(l, c);
+				field.registerObserver(this);
+				fields.add(field);
 			}
 		}
 	}
@@ -78,4 +90,17 @@ public class Board {
 		fields.stream().forEach(c -> c.restart());
 		sortMines();
 	}		
+
+	@Override
+	public void eventOccurred(Field field, FieldEvent event) {
+		if (event == FieldEvent.EXPLODE) {
+			showMines();
+			System.out.println("Lose!");
+			notifyObservers(false);
+		}
+		else if (goalAchieved()) {
+			System.out.println("Win!");
+			notifyObservers(true);
+		}
+	}
 }
