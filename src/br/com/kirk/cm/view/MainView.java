@@ -11,8 +11,9 @@ public class MainView extends JFrame{
         Board board = new Board(8, 8, 9);
         add(new BoardPanel(board));
 
+        //Configuração da Tela
         setTitle("Minesweeper (Campo Minado)");
-        setSize(690,438);
+        setSize(768,530);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
