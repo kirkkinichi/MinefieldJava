@@ -11,5 +11,9 @@ public class BoardPanel extends JPanel{
 
         setLayout(new GridLayout(board.getRow(), board.getColumns()));
         board.runEachField(c -> add(new FieldButton(c)));
+
+        board.observerRegister(event -> {
+            //TODO Implementar lógica
+        });
     }
 }

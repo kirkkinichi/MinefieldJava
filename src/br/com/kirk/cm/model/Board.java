@@ -52,8 +52,8 @@ public class Board implements FieldObserver{
     //Gera as linhas e colunas do campo
 	private void generateFields () {
 		for(int l = 0; l < row; l++) {
-			for(int c = 0; c < columns; c++) {				
-				Field field = new Field(l, c);
+			for(int c = 0; c < columns; c++) {							
+				Field field = new Field(l, c);				
 				field.registerObserver(this);
 				fields.add(field);
 			}

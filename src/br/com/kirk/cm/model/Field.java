@@ -1,5 +1,6 @@
 package br.com.kirk.cm.model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,5 +155,5 @@ public class Field {
 		boolean protegido = mined && marked;
 		
 		return desvendado || protegido;		
-	}    
+	}
 }
