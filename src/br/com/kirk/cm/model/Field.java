@@ -1,6 +1,5 @@
 package br.com.kirk.cm.model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class Field {
 	}   
 
     //Altera marcação no Campo
-    void changeMark() {
+    public void changeMark() {
 		if(!open) {
 			marked = !marked;
 
@@ -76,7 +75,7 @@ public class Field {
 	}
 	
     //Abre campo selecionado
-	boolean openField() {
+	public boolean openField() {
 		
 		if(!open && !marked) {
 			
@@ -87,7 +86,7 @@ public class Field {
 			
 			setOpened(true);
 
-			if(chekNeighboursSecurity()) {
+			if(checkNeighboursSecurity()) {
 				neighbors.forEach(v -> v.openField());
 			}
 			
@@ -98,12 +97,12 @@ public class Field {
 	}
 
     //Verifica a quantidades de vizinhos de um campo
-    long countNeighborsMine() {
-		return neighbors.stream().filter(v -> v.mined).count();
+    public int countNeighborsMine() {
+		return (int) neighbors.stream().filter(v -> v.mined).count();
 	}
 	
     //Verifica a proximidade de minas
-	boolean chekNeighboursSecurity () {
+	public boolean checkNeighboursSecurity () {
 		return neighbors.stream().noneMatch(v -> v.mined);
 	}	
     

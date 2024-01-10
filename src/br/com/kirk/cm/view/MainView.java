@@ -8,7 +8,7 @@ public class MainView extends JFrame{
 
     public MainView(){
 
-        Board board = new Board(8, 8, 9);
+        Board board = new Board(10, 10, 9);
         add(new BoardPanel(board));
 
         //Configuração da Tela

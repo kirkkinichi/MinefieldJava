@@ -1,6 +1,8 @@
 package br.com.kirk.cm.view;
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -9,7 +11,7 @@ import br.com.kirk.cm.model.Field;
 import br.com.kirk.cm.model.FieldEvent;
 import br.com.kirk.cm.model.FieldObserver;
 
-public class FieldButton extends JButton implements FieldObserver{
+public class FieldButton extends JButton implements FieldObserver, MouseListener{
 
 
     private final Color BG_DEFAULT = new Color(167,217,72);
@@ -27,6 +29,8 @@ public class FieldButton extends JButton implements FieldObserver{
             setBackground(BG_DEFAULT2);
         }	  
         setBorder(BorderFactory.createBevelBorder(0));
+
+        addMouseListener(this);
         field.registerObserver(this);
     }
 
@@ -51,7 +55,25 @@ public class FieldButton extends JButton implements FieldObserver{
     }    
 
     private void applyOpenStyle() {
-        
+        setBackground(Color.WHITE);
+
+        switch (field.countNeighborsMine()) {
+            case 1:
+                setForeground(Color.BLUE);
+                break;
+            case 2:
+                setForeground(Color.GREEN);
+                break;
+            case 3:
+                setForeground(Color.RED);
+                break;
+            default:
+                setForeground(Color.PINK);
+                break;
+        }
+
+        String value = !field.checkNeighboursSecurity() ? field.countNeighborsMine() + "" : "";
+        setText(value);
     }
 
     private void applyExplodeStyle() {
@@ -69,4 +91,32 @@ public class FieldButton extends JButton implements FieldObserver{
     private void applyDefaultStyle() {
 
     }
+
+    //Interface dos eventos do mouse
+    @Override
+    public void mousePressed(MouseEvent e){
+        if (e.getButton() == 1) {
+            field.openField();
+        } else {
+            field.changeMark();
+        }
+    }
+
+    public void mouseClicked(MouseEvent e){
+
+    }
+
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    public void mouseExited(MouseEvent e){
+
+    }
+
+    public void mouseReleased(MouseEvent e){
+
+    }
+
+    
 }
