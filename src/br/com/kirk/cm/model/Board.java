@@ -36,7 +36,7 @@ public class Board implements FieldObserver{
 
 	//Mostrar campos que possuem minas
 	private void showMines() {
-		fields.stream().filter(c -> c.isMined()).forEach(c -> c.setOpened(true));
+		fields.stream().filter(c -> c.isMined()).filter(c -> !c.isMarked()).forEach(c -> c.setOpened(true));
 	}
 	
     //Abre o campo

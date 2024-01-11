@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import br.com.kirk.cm.model.Field;
@@ -27,7 +28,8 @@ public class FieldButton extends JButton implements FieldObserver, MouseListener
             setBackground(BG_DEFAULT);
         } else {
             setBackground(BG_DEFAULT2);
-        }	  
+        }	
+        setOpaque(true);  
         setBorder(BorderFactory.createBevelBorder(0));
 
         addMouseListener(this);
@@ -55,6 +57,12 @@ public class FieldButton extends JButton implements FieldObserver, MouseListener
     }    
 
     private void applyOpenStyle() {
+
+        if (field.isMined()) {
+            setBackground(Color.RED);
+            return;
+        }
+
         setBackground(Color.WHITE);
 
         switch (field.countNeighborsMine()) {
@@ -65,10 +73,19 @@ public class FieldButton extends JButton implements FieldObserver, MouseListener
                 setForeground(Color.GREEN);
                 break;
             case 3:
+                setForeground(Color.YELLOW);
+                break;
+            case 4:
+                setForeground(Color.ORANGE);
+                break;
+            case 5:
                 setForeground(Color.RED);
                 break;
-            default:
+            case 6:
                 setForeground(Color.PINK);
+                break;
+            default:
+                setForeground(Color.BLACK);
                 break;
         }
 
@@ -77,19 +94,28 @@ public class FieldButton extends JButton implements FieldObserver, MouseListener
     }
 
     private void applyExplodeStyle() {
-
+        setBackground(Color.RED);
+        setText("");
     }
 
     private void applyMarkStyle() {
-
+        setBackground(Color.CYAN);
+        setText("X");
     }    
 
     private void applyMarkOffStyle() {
-
+        if ((field.getRow() + field.getColumn()) % 2 == 0) {
+            setBackground(BG_DEFAULT);
+        }
+        else {
+            setBackground(BG_DEFAULT2);
+        }        
+        setText("");
     }
 
     private void applyDefaultStyle() {
-
+        setBackground(BG_DEFAULT);
+        setText("");
     }
 
     //Interface dos eventos do mouse
