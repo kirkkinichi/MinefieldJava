@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import br.com.kirk.cm.model.Field;
@@ -114,7 +113,11 @@ public class FieldButton extends JButton implements FieldObserver, MouseListener
     }
 
     private void applyDefaultStyle() {
-        setBackground(BG_DEFAULT);
+        if ((field.getRow() + field.getColumn()) % 2 == 0) {
+            setBackground(BG_DEFAULT);
+        } else {
+            setBackground(BG_DEFAULT2);
+        }	
         setText("");
     }
 

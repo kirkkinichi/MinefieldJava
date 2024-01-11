@@ -12,7 +12,7 @@ public class Board implements FieldObserver{
 	private final int mines;
 	
 	private final List<Field> fields = new ArrayList<>();
-	private final List<Consumer<Boolean>> observers = new ArrayList<>();
+	private final List<Consumer<ResultEvent>> observers = new ArrayList<>();
 
 	public Board(int row, int columns, int mines) {
 		this.row = row;
@@ -25,13 +25,13 @@ public class Board implements FieldObserver{
 	}	
 
 	//Adicionar Observador
-	public void observerRegister(Consumer<Boolean> observer) {
+	public void observerRegister(Consumer<ResultEvent> observer) {
 		observers.add(observer);
 	}
 
 	//Notificar que evento aconteceu
 	public void notifyObservers(boolean result){
-		observers.stream().forEach(o -> o.accept(result));
+		observers.stream().forEach(o -> o.accept(new ResultEvent(result)));
 	}
 
 	//Mostrar campos que possuem minas
@@ -112,14 +112,10 @@ public class Board implements FieldObserver{
 	public void eventOccurred(Field field, FieldEvent event) {
 		if (event == FieldEvent.EXPLODE) {
 			showMines();
-			System.out.println("Lose!");
 			notifyObservers(false);
 		}
 		else if (goalAchieved()) {
-			System.out.println("Win!");
 			notifyObservers(true);
 		}
-	}
-
-	
+	}	
 }

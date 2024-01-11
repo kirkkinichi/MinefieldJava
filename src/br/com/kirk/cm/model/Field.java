@@ -33,7 +33,7 @@ public class Field {
     //Adiciona Vizinhos
     boolean addNeighbors(Field neighbor) {
         
-        boolean difRow = column != neighbor.column;
+        boolean difRow = row != neighbor.row;
 		boolean difColumn = column != neighbor.column;
 		boolean diagonal = difRow && difColumn;
 		
@@ -59,6 +59,7 @@ public class Field {
 		marked = false;
 		mined = false;
 		open = false;
+		notifyObservers(FieldEvent.RESTART);
 	}   
 
     //Altera marcação no Campo
@@ -94,12 +95,7 @@ public class Field {
 		} else {
 			return false;
 		}		
-	}
-
-    //Verifica a quantidades de vizinhos de um campo
-    public int countNeighborsMine() {
-		return (int) neighbors.stream().filter(v -> v.mined).count();
-	}
+	}    
 	
     //Verifica a proximidade de minas
 	public boolean checkNeighboursSecurity () {
@@ -146,6 +142,11 @@ public class Field {
 		if (open) {
 			notifyObservers(FieldEvent.OPEN);
 		}
+	}
+
+	//Verifica a quantidades de vizinhos de um campo
+    public int countNeighborsMine() {
+		return (int) neighbors.stream().filter(v -> v.mined).count();
 	}
 	
     //Retorna objetivo
