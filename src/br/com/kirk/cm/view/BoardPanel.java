@@ -18,10 +18,10 @@ public class BoardPanel extends JPanel{
 
             SwingUtilities.invokeLater(() -> {
                 if (event.isWon()) {
-                    JOptionPane.showMessageDialog(this, "Won !");
+                    JOptionPane.showMessageDialog(this, "You Win!");
                 }
                 else {
-                    JOptionPane.showMessageDialog(this, "Lose!");
+                    JOptionPane.showMessageDialog(this, "You Lose!");
                 }
 
                 board.restart();
