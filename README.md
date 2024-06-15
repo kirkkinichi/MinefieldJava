@@ -6,9 +6,6 @@ Projeto do jogo Campo Minado (Minesweeper), desenvolvido em Java durante o curso
 
 <ul>
     <li>Java</li>
-    <li>Java Swing</li>
-    <li>GitHub</li>
-    <li>Visual Studio Code</li>
 </ul>
 
 ## Screenshots
