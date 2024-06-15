@@ -13,7 +13,7 @@ public class MainView extends JFrame{
 
         //Configuração da Tela
         setTitle("Minesweeper (Campo Minado)");
-        setSize(768,530);
+        setSize(768,768);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
